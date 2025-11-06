@@ -9,13 +9,13 @@ import { dark } from "@clerk/themes";
 const CLERK_PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
 const ClerkWithTheme = ({ children }) => {
-    const { theme } = useTheme();
+    const { darkMode } = useTheme();
 
     return (
         <ClerkProvider
             publishableKey={CLERK_PUBLISHABLE_KEY}
             appearance={{
-                baseTheme: theme === "dark" ? dark : undefined, // dark if dark, otherwise light
+                baseTheme: darkMode ? dark : undefined, // dark if dark, otherwise light
                 variables: {
                     colorPrimary: "#3b82f6", // optional: your brand blue
                 },
