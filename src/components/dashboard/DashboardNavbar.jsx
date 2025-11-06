@@ -1,11 +1,11 @@
-import { Moon, Sun } from 'lucide-react';
+import { Moon, Sun, Menu } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useTheme } from "../../context/ThemeContext.jsx";
+import { UserButton } from "@clerk/clerk-react";
 import { dark } from "@clerk/themes";
 import { assets } from "../../assets/assets.js";
-import Button from "../ui/Button.jsx";
 
-const Navbar = ({ openSignUp }) => {
+const DashboardNavbar = () => {
 	const [isScrolled, setIsScrolled] = useState(false);
 	const { darkMode, toggleTheme } = useTheme();
 
@@ -16,14 +16,6 @@ const Navbar = ({ openSignUp }) => {
 		window.addEventListener('scroll', handleScroll);
 		return () => window.removeEventListener('scroll', handleScroll);
 	}, []);
-
-	const handleSignUp = () => {
-		openSignUp({
-			appearance: {
-				baseTheme: darkMode ? dark : undefined,
-			}
-		});
-	};
 
 	return (
 		<nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -43,18 +35,18 @@ const Navbar = ({ openSignUp }) => {
 
 					{/* Navigation Links */}
 					<div className="hidden md:flex items-center gap-8">
-						<a href="#features" className="text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 transition-colors duration-200 font-medium">
-							Features
+						<a href="/dashboard" className="text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 transition-colors duration-200 font-medium">
+							Dashboard
 						</a>
-						<a href="#pricing" className="text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 transition-colors duration-200 font-medium">
-							Pricing
+						<a href="/files" className="text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 transition-colors duration-200 font-medium">
+							My Files
 						</a>
-						<a href="#testimonials" className="text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 transition-colors duration-200 font-medium">
-							Testimonials
+						<a href="/shared" className="text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 transition-colors duration-200 font-medium">
+							Shared
 						</a>
 					</div>
 
-					{/* CTA Buttons + Dark Mode Toggle */}
+					{/* Right Side: Dark Mode Toggle + Profile Button */}
 					<div className="flex items-center gap-3">
 						{/* Dark Mode Toggle Button */}
 						<button
@@ -69,15 +61,16 @@ const Navbar = ({ openSignUp }) => {
 							)}
 						</button>
 
-						{/* Using Button Component */}
-						<Button
-							onClick={handleSignUp}
-							variant="primary"
-							size="sm"
-							className="shadow-md hover:shadow-lg"
-						>
-							Try it for free
-						</Button>
+						{/* Clerk UserButton - Profile/Account Menu */}
+						<UserButton
+							appearance={{
+								baseTheme: darkMode ? dark : undefined,
+								elements: {
+									avatarBox: "w-10 h-10",
+								}
+							}}
+							afterSignOutUrl="/"
+						/>
 					</div>
 				</div>
 			</div>
@@ -85,4 +78,4 @@ const Navbar = ({ openSignUp }) => {
 	);
 };
 
-export default Navbar;
+export default DashboardNavbar;

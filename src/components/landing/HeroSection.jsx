@@ -1,6 +1,27 @@
 import { assets } from "../../assets/assets.js";
+import { useTheme } from "../../context/ThemeContext.jsx";
+import { dark } from "@clerk/themes";
+import Button from "../ui/Button.jsx";
 
-const HeroSection = () => {
+const HeroSection = ({ openSignIn, openSignUp }) => {
+	const { darkMode } = useTheme();
+
+	const handleSignUp = () => {
+		openSignUp({
+			appearance: {
+				baseTheme: darkMode ? dark : undefined,
+			},
+		});
+	};
+
+	const handleSignIn = () => {
+		openSignIn({
+			appearance: {
+				baseTheme: darkMode ? dark : undefined,
+			},
+		});
+	};
+
 	return (
 		<div className="relative pt-16">
 			<div className="absolute inset-0 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900 opacity-80 -z-10"></div>
@@ -15,14 +36,25 @@ const HeroSection = () => {
 						<p className="mt-3 max-w-md mx-auto text-base text-gray-500 dark:text-gray-400 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
 							Experience seamless file upload, management & sharing with end-to-end encryption. Accessible anywhere, anytime.
 						</p>
+
 						<div className="mt-10 max-w-sm mx-auto sm:max-w-none sm:flex sm:justify-center">
 							<div className="space-y-4 sm:space-y-0 sm:mx-auto sm:inline-grid sm:grid-cols-2 sm:gap-5">
-								<button className="w-full flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-500 hover:bg-blue-600 md:py-4 md:text-lg md:px-10 transition-all duration-200 shadow-lg hover:shadow-xl">
+								<Button
+									onClick={handleSignUp}
+									variant="primary"
+									size="lg"
+									className="w-full"
+								>
 									Get Started
-								</button>
-								<button className="w-full flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-blue-600 dark:text-blue-400 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 md:py-4 md:text-lg md:px-10 transition-all duration-200 shadow-lg hover:shadow-xl border-2 border-blue-500">
+								</Button>
+								<Button
+									onClick={handleSignIn}
+									variant="secondary"
+									size="lg"
+									className="w-full"
+								>
 									Sign In
-								</button>
+								</Button>
 							</div>
 						</div>
 					</div>
