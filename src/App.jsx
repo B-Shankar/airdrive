@@ -1,23 +1,35 @@
 import React from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import Landing from './pages/Landing.jsx';
 import NotFound from "./pages/NotFound.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
-import {RedirectToSignIn, SignedIn, SignedOut} from "@clerk/clerk-react";
+import UploadFile from "./pages/UploadFile.jsx";
+import MyFiles from "./pages/MyFiles.jsx";
+import Subscription from "./pages/Subscription.jsx";
+import Transactions from "./pages/Transactions.jsx";
+import { useAuth } from "@clerk/clerk-react";
+import Loading from "./components/ui/Loading.jsx";
+
+const ProtectedRoute = ({ children }) => {
+	const { isSignedIn, isLoaded } = useAuth();
+
+	if (!isLoaded) {
+		return <Loading />;
+	}
+
+	return isSignedIn ? children : <Navigate to="/" replace />;
+};
 
 const App = () => {
 	return (
 		<BrowserRouter>
 			<Routes>
 				<Route path="/" element={<Landing />} />
-				<Route path="/dashboard" element={
-					<>
-						<SignedIn><Dashboard /></SignedIn>
-						<SignedOut><RedirectToSignIn /></SignedOut>
-					</>
-				} />
-
-				{/* Catch-all route for unmatched paths */}
+				<Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+				<Route path="/upload" element={<ProtectedRoute><UploadFile /></ProtectedRoute>} />
+				<Route path="/my-files" element={<ProtectedRoute><MyFiles /></ProtectedRoute>} />
+				<Route path="/subscription" element={<ProtectedRoute><Subscription /></ProtectedRoute>} />
+				<Route path="/transactions" element={<ProtectedRoute><Transactions /></ProtectedRoute>} />
 				<Route path="*" element={<NotFound />} />
 			</Routes>
 		</BrowserRouter>
