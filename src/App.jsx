@@ -9,6 +9,7 @@ import Subscription from "./pages/Subscription.jsx";
 import Transactions from "./pages/Transactions.jsx";
 import { useAuth } from "@clerk/clerk-react";
 import Loading from "./components/ui/Loading.jsx";
+import {Toaster} from "react-hot-toast";
 
 const ProtectedRoute = ({ children }) => {
 	const { isSignedIn, isLoaded } = useAuth();
@@ -23,6 +24,7 @@ const ProtectedRoute = ({ children }) => {
 const App = () => {
 	return (
 		<BrowserRouter>
+			<Toaster />
 			<Routes>
 				<Route path="/" element={<Landing />} />
 				<Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
