@@ -1,8 +1,19 @@
-import { useUser } from "@clerk/clerk-react";
+import {useAuth, useUser} from "@clerk/clerk-react";
 import DashboardLayout from "../layout/DashboardLayout.jsx";
+import {useEffect} from "react";
 
 const Dashboard = () => {
 	const { user } = useUser();
+
+	// const { getToken } = useAuth();
+	//
+	// useEffect(() => {
+	// 	const displayToken = async () => {
+	// 		const token = await getToken();
+	// 		console.log("Bearer " +token);
+	// 	}
+	// 	displayToken();
+	// }, []);
 
 	return (
 		<DashboardLayout>
