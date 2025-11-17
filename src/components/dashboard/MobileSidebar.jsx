@@ -4,7 +4,7 @@ import { SIDE_MENU_DATA } from "../../assets/data/constants.js";
 import NavLink from "./NavLink.jsx";
 import CreditsDisplay from "./CreditsDisplay.jsx";
 
-const MobileSidebar = ({ isOpen, onClose, credits }) => {
+const MobileSidebar = ({ isOpen, onClose, credits, plan, loading, onCreditsClick }) => {
 	return (
 		<>
 			{/* Overlay */}
@@ -39,7 +39,13 @@ const MobileSidebar = ({ isOpen, onClose, credits }) => {
 					</div>
 
 					{/* Credits Display - Mobile */}
-					<CreditsDisplay credits={credits} variant="mobile" />
+					<CreditsDisplay
+						credits={credits}
+						plan={plan}
+						loading={loading}
+						variant="mobile"
+						onClick={onCreditsClick}
+					/>
 
 					{/* Navigation Links */}
 					<nav className="flex-1 overflow-y-auto p-4">

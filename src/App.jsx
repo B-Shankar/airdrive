@@ -10,6 +10,7 @@ import Transactions from "./pages/Transactions.jsx";
 import { useAuth } from "@clerk/clerk-react";
 import Loading from "./components/ui/Loading.jsx";
 import {Toaster} from "react-hot-toast";
+import {UserCreditsProvider} from "./context/userCreditsContext.jsx";
 
 const ProtectedRoute = ({ children }) => {
 	const { isSignedIn, isLoaded } = useAuth();
@@ -23,18 +24,20 @@ const ProtectedRoute = ({ children }) => {
 
 const App = () => {
 	return (
-		<BrowserRouter>
-			<Toaster />
-			<Routes>
-				<Route path="/" element={<Landing />} />
-				<Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-				<Route path="/upload" element={<ProtectedRoute><UploadFile /></ProtectedRoute>} />
-				<Route path="/my-files" element={<ProtectedRoute><MyFiles /></ProtectedRoute>} />
-				<Route path="/subscription" element={<ProtectedRoute><Subscription /></ProtectedRoute>} />
-				<Route path="/transactions" element={<ProtectedRoute><Transactions /></ProtectedRoute>} />
-				<Route path="*" element={<NotFound />} />
-			</Routes>
-		</BrowserRouter>
+		<UserCreditsProvider>
+			<BrowserRouter>
+				<Toaster />
+				<Routes>
+					<Route path="/" element={<Landing />} />
+					<Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+					<Route path="/upload" element={<ProtectedRoute><UploadFile /></ProtectedRoute>} />
+					<Route path="/my-files" element={<ProtectedRoute><MyFiles /></ProtectedRoute>} />
+					<Route path="/subscription" element={<ProtectedRoute><Subscription /></ProtectedRoute>} />
+					<Route path="/transactions" element={<ProtectedRoute><Transactions /></ProtectedRoute>} />
+					<Route path="*" element={<NotFound />} />
+				</Routes>
+			</BrowserRouter>
+		</UserCreditsProvider>
 	);
 };
 
