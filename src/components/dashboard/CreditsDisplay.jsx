@@ -1,6 +1,6 @@
-import {Coins, Wallet} from 'lucide-react';
+import { Coins, Wallet } from 'lucide-react';
 
-const CreditsDisplay = ({ credits, variant = 'desktop', onClick }) => {
+const CreditsDisplay = ({ credits, plan, loading, variant = 'desktop', onClick }) => {
 	if (variant === 'mobile') {
 		return (
 			<div
@@ -10,9 +10,18 @@ const CreditsDisplay = ({ credits, variant = 'desktop', onClick }) => {
 				<div className="flex items-center justify-between">
 					<div className="flex items-center gap-2">
 						<Wallet size={20} className="text-yellow-300" />
-						<span className="font-semibold">Your Credits</span>
+						<div className="flex flex-col">
+							<span className="font-semibold">Your Credits</span>
+							<span className="text-xs opacity-90">{plan || 'BASIC'} Plan</span>
+						</div>
 					</div>
-					<span className="text-2xl font-bold">{credits}</span>
+					<div className="flex items-center gap-2">
+						{loading ? (
+							<div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+						) : (
+							<span className="text-2xl font-bold">{credits}</span>
+						)}
+					</div>
 				</div>
 			</div>
 		);
@@ -24,8 +33,14 @@ const CreditsDisplay = ({ credits, variant = 'desktop', onClick }) => {
 			className="hidden sm:flex items-center gap-2 px-3 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 dark:from-blue-600 dark:to-blue-700 text-white shadow-md hover:from-blue-600 hover:to-blue-700 dark:hover:from-blue-700 dark:hover:to-blue-800 transition-all duration-200 cursor-pointer"
 		>
 			<Wallet size={18} className="text-yellow-300" />
-			<span className="font-semibold text-sm">{credits}</span>
-			<span className="text-xs opacity-90">Credits</span>
+			{loading ? (
+				<div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+			) : (
+				<>
+					<span className="font-semibold text-sm">{credits}</span>
+					<span className="text-xs opacity-90">Credits</span>
+				</>
+			)}
 		</button>
 	);
 };

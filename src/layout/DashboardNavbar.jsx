@@ -2,6 +2,7 @@ import { Menu, X } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useLocation } from "react-router-dom";
 import { SIDE_MENU_DATA } from "../assets/data/constants.js";
+import { useUserCredits } from "../hooks/useUserCredits.js";
 import Logo from "../components/dashboard/Logo.jsx";
 import NavLink from "../components/dashboard/NavLink.jsx";
 import CreditsDisplay from "../components/dashboard/CreditsDisplay.jsx";
@@ -16,7 +17,8 @@ const DashboardNavbar = () => {
 	const [isCreditsModalOpen, setIsCreditsModalOpen] = useState(false);
 	const location = useLocation();
 
-	const userCredits = 5;
+	// Get credits from context
+	const { credits, plan, loading } = useUserCredits();
 
 	useEffect(() => {
 		const handleScroll = () => {
@@ -51,7 +53,9 @@ const DashboardNavbar = () => {
 
 						<div className="flex items-center gap-3">
 							<CreditsDisplay
-								credits={userCredits}
+								credits={credits}
+								plan={plan}
+								loading={loading}
 								variant="desktop"
 								onClick={() => setIsCreditsModalOpen(true)}
 							/>
@@ -77,7 +81,9 @@ const DashboardNavbar = () => {
 			<MobileSidebar
 				isOpen={isMobileMenuOpen}
 				onClose={() => setIsMobileMenuOpen(false)}
-				credits={userCredits}
+				credits={credits}
+				plan={plan}
+				loading={loading}
 				onCreditsClick={() => {
 					setIsMobileMenuOpen(false);
 					setIsCreditsModalOpen(true);
@@ -87,7 +93,8 @@ const DashboardNavbar = () => {
 			<CreditsModal
 				isOpen={isCreditsModalOpen}
 				onClose={() => setIsCreditsModalOpen(false)}
-				credits={userCredits}
+				credits={credits}
+				plan={plan}
 			/>
 		</>
 	);
