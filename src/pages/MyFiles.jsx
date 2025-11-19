@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Search } from 'lucide-react';
+import {Search, Upload} from 'lucide-react';
 import { useAuth } from '@clerk/clerk-react';
 import toast from 'react-hot-toast';
 import DashboardLayout from '../layout/DashboardLayout.jsx';
@@ -8,8 +8,10 @@ import ViewToggle from '../components/manage-files/ViewToggle.jsx';
 import ConfirmDialog from '../components/manage-files/ConfirmDialog.jsx';
 import ShareDialog from '../components/manage-files/ShareDialog.jsx';
 import { fileService } from '../api';
+import {useNavigate} from "react-router-dom";
 
 const MyFiles = () => {
+	const navigate = useNavigate();
 	const [files, setFiles] = useState([]);
 	const [viewMode, setViewMode] = useState('list');
 	const [searchQuery, setSearchQuery] = useState('');
@@ -181,14 +183,26 @@ const MyFiles = () => {
 
 	return (
 		<DashboardLayout>
-			<div className="mb-6 md:mb-8 flex items-center justify-between">
-				<div>
-					<h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
-						My Files
-					</h1>
-					<p className="mt-1 md:mt-2 text-sm md:text-base text-gray-600 dark:text-gray-400">
-						Manage your uploaded files ({files.length} {files.length === 1 ? 'file' : 'files'})
-					</p>
+			<div className="mb-6 md:mb-8">
+				{/* Flex container with wrap for mobile */}
+				<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+					<div>
+						<h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
+							My Files
+						</h1>
+						<p className="mt-1 md:mt-2 text-sm md:text-base text-gray-600 dark:text-gray-400">
+							Manage your uploaded files ({files.length} {files.length === 1 ? 'file' : 'files'})
+						</p>
+					</div>
+
+					{/* Upload Button - Full width on mobile, auto on larger screens */}
+					<button
+						onClick={() => navigate('/upload')}
+						className="flex items-center justify-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors shadow-md cursor-pointer hover:shadow-lg sm:flex-shrink-0"
+					>
+						<Upload size={20} />
+						<span>Upload Files</span>
+					</button>
 				</div>
 			</div>
 

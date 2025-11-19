@@ -74,13 +74,20 @@ const fileService = {
 	},
 
 	/**
-	 * Upload a new file
-	 * @param {FormData} formData - Form data containing file
+	 * Upload multiple files
+	 * @param {File[]} files - Array of files to upload
 	 * @param {string} token - Clerk auth token
 	 * @param {Function} onUploadProgress - Progress callback
-	 * @returns {Promise} Uploaded file object
+	 * @returns {Promise} Upload response
 	 */
-	uploadFile: async (formData, token, onUploadProgress = null) => {
+	uploadFiles: async (files, token, onUploadProgress = null) => {
+		const formData = new FormData();
+
+		// Append all files with the same field name 'files'
+		files.forEach((file) => {
+			formData.append('files', file);
+		});
+
 		const config = {
 			headers: {
 				Authorization: `Bearer ${token}`,
