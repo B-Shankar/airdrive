@@ -1,13 +1,13 @@
-import { createContext, useCallback, useEffect, useState } from 'react';
-import { useAuth } from '@clerk/clerk-react';
-import { userService } from '../api';
-import toast from 'react-hot-toast';
+import { createContext, useCallback, useEffect, useState } from "react";
+import { useAuth } from "@clerk/clerk-react";
+import { userService} from "../api/index.js";
+import toast from "react-hot-toast";
 
 export const UserCreditsContext = createContext();
 
 export const UserCreditsProvider = ({ children }) => {
 	const [credits, setCredits] = useState(0);
-	const [plan, setPlan] = useState('BASIC');
+	const [plan, setPlan] = useState(null);
 	const [loading, setLoading] = useState(false);
 	const { getToken, isSignedIn } = useAuth();
 
@@ -24,32 +24,32 @@ export const UserCreditsProvider = ({ children }) => {
 			setCredits(data.credits);
 			setPlan(data.plan);
 
-			console.log('User credits fetched:', data);
+			console.log('Credits fetched successfully:', data);
 		} catch (error) {
-			console.error('Error fetching user credits:', error);
-			toast.error('Failed to fetch user credits');
+			console.error('Error fetching credits:', error);
+			toast.error('Failed to load credits. Please try again.');
 		} finally {
 			setLoading(false);
 		}
 	}, [getToken, isSignedIn]);
 
-	// Update credits manually (e.g., after file upload/delete)
+	// Update credits locally (optimistic update)
 	const updateCredits = useCallback((newCredits) => {
-		console.log('Updating credits to:', newCredits);
+		console.log("Updating Credits:", newCredits);
 		setCredits(newCredits);
 	}, []);
 
-	// Decrease credits by a certain amount
-	const decreaseCredits = useCallback((amount = 1) => {
-		setCredits((prev) => Math.max(0, prev - amount));
+	// Deduct credits (e.g., after file upload)
+	const deductCredits = useCallback((amount) => {
+		setCredits(prev => Math.max(0, prev - amount));
 	}, []);
 
-	// Increase credits by a certain amount
-	const increaseCredits = useCallback((amount = 1) => {
-		setCredits((prev) => prev + amount);
+	// Add credits (e.g., after purchase)
+	const addCredits = useCallback((amount) => {
+		setCredits(prev => prev + amount);
 	}, []);
 
-	// Fetch credits on mount and when user signs in
+	// Initial fetch on mount
 	useEffect(() => {
 		if (isSignedIn) {
 			fetchUserCredits();
@@ -63,8 +63,8 @@ export const UserCreditsProvider = ({ children }) => {
 		setCredits,
 		fetchUserCredits,
 		updateCredits,
-		decreaseCredits,
-		increaseCredits,
+		deductCredits,
+		addCredits,
 	};
 
 	return (

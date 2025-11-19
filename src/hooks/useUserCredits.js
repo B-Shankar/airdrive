@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { UserCreditsContext } from '../context/UserCreditsContext';
+import { UserCreditsContext } from '../context/UserCreditsContext.jsx';
 
 export const useUserCredits = () => {
 	const context = useContext(UserCreditsContext);
