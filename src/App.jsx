@@ -10,7 +10,7 @@ import Transactions from "./pages/Transactions.jsx";
 import { useAuth } from "@clerk/clerk-react";
 import Loading from "./components/ui/Loading.jsx";
 import {Toaster} from "react-hot-toast";
-import {UserCreditsProvider} from "./context/userCreditsContext.jsx";
+import {UserCreditsProvider} from "./context/UserCreditsContext.jsx";
 
 const ProtectedRoute = ({ children }) => {
 	const { isSignedIn, isLoaded } = useAuth();
