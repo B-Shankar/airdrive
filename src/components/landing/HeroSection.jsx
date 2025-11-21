@@ -63,7 +63,7 @@ const HeroSection = ({ openSignIn, openSignUp }) => {
 				<div className="relative">
 					<div className="rounded-lg shadow-xl overflow-hidden">
 						<img
-							src={assets.dashboard}
+							src={darkMode ? assets.dashboard_dark : assets.dashboard}
 							alt="AirDrive Dashboard"
 							className="w-full h-auto object-cover"
 						/>

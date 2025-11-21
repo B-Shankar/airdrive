@@ -24,7 +24,7 @@ export const UserCreditsProvider = ({ children }) => {
 			setCredits(data.credits);
 			setPlan(data.plan);
 
-			console.log('Credits fetched successfully:', data);
+			console.log('Credits fetched successfully:', data?.credits);
 		} catch (error) {
 			console.error('Error fetching credits:', error);
 			toast.error('Failed to load credits. Please try again.');

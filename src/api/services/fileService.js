@@ -19,24 +19,41 @@ const fileService = {
 	},
 
 	/**
-	 * Download a file by ID
+	 * Download a file by ID (works with or without auth)
 	 * @param {string} fileId - File ID to download
-	 * @param {string} token - Clerk auth token (optional, if needed)
-	 * @returns {Promise} Blob data
+	 * @param {string} fileName - File name for saving
+	 * @param {string} token - Clerk auth token (optional)
+	 * @returns {Promise} Downloads the file
 	 */
-	downloadFile: async (fileId, token = null) => {
-		const config = {
-			responseType: 'blob', // Important for file downloads
-		};
-
-		if (token) {
-			config.headers = {
-				Authorization: `Bearer ${token}`,
+	downloadFile: async (fileId, fileName, token = null) => {
+		try {
+			const config = {
+				responseType: 'blob',
 			};
-		}
 
-		const response = await apiClient.get(`/files/download/${fileId}`, config);
-		return response.data;
+			if (token) {
+				config.headers = {
+					Authorization: `Bearer ${token}`,
+				};
+			}
+
+			const response = await apiClient.get(`/files/download/${fileId}`, config);
+
+			// Create blob link to download
+			const url = window.URL.createObjectURL(new Blob([response.data]));
+			const link = document.createElement('a');
+			link.href = url;
+			link.setAttribute('download', fileName);
+			document.body.appendChild(link);
+			link.click();
+			link.remove();
+			window.URL.revokeObjectURL(url);
+
+			return response.data;
+		} catch (error) {
+			console.error('Download error:', error);
+			throw error;
+		}
 	},
 
 	/**
@@ -61,12 +78,14 @@ const fileService = {
 	 * @returns {Promise} Updated file object
 	 */
 	toggleFilePublic: async (fileId, token) => {
-		const response = await apiClient.patch(
+		const response = await apiClient.post(
 			`/files/${fileId}/toggle-public`,
 			{}, // Empty body as the endpoint toggles the state
 			{
 				headers: {
 					Authorization: `Bearer ${token}`,
+					"Content-Type": "application/json",
+					"Accept": "application/json, text/plain, */*",
 				},
 			}
 		);
@@ -124,7 +143,27 @@ const fileService = {
 	 * @returns {string} Share URL
 	 */
 	getShareLink: (fileId) => {
-		return `${window.location.origin}/shared/${fileId}`;
+		return `${window.location.origin}/file/${fileId}`;
+	},
+
+	/**
+	 * Get public file metadata (no auth required)
+	 * @param {string} fileId - File ID
+	 * @returns {Promise} File metadata
+	 */
+	getPublicFile: async (fileId) => {
+		const response = await apiClient.get(`/files/public/${fileId}`);
+		return response.data;
+	},
+
+	/**
+	 * Get download URL for file
+	 * @param {string} fileId - File ID
+	 * @returns {string} Download URL
+	 */
+	getDownloadUrl: (fileId) => {
+		const baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api/v1.0';
+		return `${baseUrl}/files/download/${fileId}`;
 	},
 };
 

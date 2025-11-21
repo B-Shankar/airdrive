@@ -11,6 +11,7 @@ import { useAuth } from "@clerk/clerk-react";
 import Loading from "./components/ui/Loading.jsx";
 import {Toaster} from "react-hot-toast";
 import {UserCreditsProvider} from "./context/UserCreditsContext.jsx";
+import PublicFileView from "./pages/PublicFileView.jsx";
 
 const ProtectedRoute = ({ children }) => {
 	const { isSignedIn, isLoaded } = useAuth();
@@ -26,7 +27,16 @@ const App = () => {
 	return (
 		<UserCreditsProvider>
 			<BrowserRouter>
-				<Toaster />
+				<Toaster
+					position="top-right"
+					toastOptions={{
+						duration: 3000,
+						style: {
+							background: '#363636',
+							color: '#fff',
+						},
+					}}
+				/>
 				<Routes>
 					<Route path="/" element={<Landing />} />
 					<Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
@@ -34,6 +44,11 @@ const App = () => {
 					<Route path="/my-files" element={<ProtectedRoute><MyFiles /></ProtectedRoute>} />
 					<Route path="/subscription" element={<ProtectedRoute><Subscription /></ProtectedRoute>} />
 					<Route path="/transactions" element={<ProtectedRoute><Transactions /></ProtectedRoute>} />
+
+					{/* Public file view - no authentication required */}
+					<Route path="/file/:fileId" element={<PublicFileView />} />
+
+					{/* 404 - Must be last */}
 					<Route path="*" element={<NotFound />} />
 				</Routes>
 			</BrowserRouter>
