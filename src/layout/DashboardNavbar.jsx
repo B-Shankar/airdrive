@@ -39,8 +39,8 @@ const DashboardNavbar = () => {
 					? 'bg-white dark:bg-gray-900 shadow-md py-3'
 					: 'bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm py-4'
 			}`}>
-				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-					<div className="flex items-center justify-between">
+				<div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-4">
+				<div className="flex items-center justify-between">
 						<div className="flex items-center gap-4">
 							<Logo />
 						</div>
