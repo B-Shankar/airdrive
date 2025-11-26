@@ -99,5 +99,5 @@ public/
 
 ---
 
-MIT License · © [Your Name]
+MIT License · © B-Shankar
 ```
