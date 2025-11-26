@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://airdrive.vercel.app/sitemap.xml
